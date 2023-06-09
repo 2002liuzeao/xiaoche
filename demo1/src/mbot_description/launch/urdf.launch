@@ -1,0 +1,17 @@
+<launch>
+    <!-- param是要加载ros的一个参数：robot_description （描述机器人的具体模型） 参数的具体内容是.urdf文件 ，将路径下的.urdf文件内容让到robot_description  -->
+	<param name="robot_description" textfile="$(find mbot_description)/urdf/mbot_base.urdf" />
+ 
+	<!-- 设置GUI参数，显示关节控制插件 -->
+	<param name="use_gui" value="true"/>
+	
+	<!-- 运行joint_state_publisher节点，发布机器人的关节状态 ，而且可以通过UI界面对joint进行控制 -->
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+	
+	<!-- 运行robot_state_publisher节点，发布tf ，整理成三维姿态信息发布 -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+	
+	<!-- 运行rviz可视化界面 通过 args加载参数 .rviz文件 作用：默认打开rviz没有任何显示插件 通过保存配置文件的形式保存设置好的插件 保存在config下  配置文件是可以通过rviz保存得到的 -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find mbot_description)/config/mbot_urdf.rviz" required="true" />
+</launch>
+
